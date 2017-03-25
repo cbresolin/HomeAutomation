@@ -74,7 +74,7 @@ void switchoff_led()
 void loop()
 {
   lmVal = analogRead(ML35PIN);
-  temp = lmVal * (1.1 / 1023.0) * 100.0;
+  temp = (lmVal * (1.1 / 1023.0) * 100.0) - 1;
   
   btserial.print("Temperature: ");
   btserial.print(temp);
