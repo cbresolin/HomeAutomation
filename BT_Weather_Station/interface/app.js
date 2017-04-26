@@ -13,7 +13,10 @@ app.use(express.static(__dirname + '/public'));
 
 // Rest
 var rest = require("arest")(app);
-rest.addDevice('serial','COM4', 9600);
+// Windows
+// rest.addDevice('serial','COM4', 9600);
+// Linux
+rest.addDevice('serial','/dev/ttyACM0', 9600);
 
 // Serve interface
 app.get('/', function(req, res){
