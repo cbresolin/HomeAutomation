@@ -3,13 +3,6 @@ import serial
 import argparse
 import sys
 
-def is_json(myjson):
-  try:
-    json_object = json.loads(myjson)
-  except ValueError, e:
-    return False
-  return True
-
 # Manage argument parser
 parser = argparse.ArgumentParser(description='Control Arduino Uno actions')
 parser.add_argument('-command', required=True, type=str, help='ReST command to be sent to Arduino (e.g. /id/, /blue/)')
@@ -23,6 +16,8 @@ try:
     serialPort.close()
 
     dictResp = json.loads(strResp)
+
+    # Return values according to command
     if "/temperature/" in args.command:
         print dictResp.get('temperature', 'None')
     else:
