@@ -7,7 +7,10 @@ sudo rfcomm release all (to unbind all devices)
 
 2) Start mysql database:
 
-sudo docker run --name jeedom-mysql -v /opt/jeedom/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=mysqlroot -d mysql:latest
+sudo docker run --name jeedom-mysql \
+                -v /opt/jeedom/mysql:/var/lib/mysql \
+                -e MYSQL_ROOT_PASSWORD=mysqlroot \
+                -d mysql:latest
 
 3) Start Jeedom server:
 
@@ -21,6 +24,7 @@ sudo docker run --name jeedom-server \
                    --device=/dev/rfcomm0:/dev/rfcomm0 \
                    -p 9080:80 \
                    -p 9022:22 \
+                   -p 90443:443 \
                    jeedom/jeedom
 
 4) Get Container MAC address to avoid loosing API key for Jeedom market
