@@ -55,7 +55,7 @@ step_2_mainpackage() {
 	apt-get -y install smbclient htop iotop vim iftop
 	apt-get -y install dos2unix
 	apt-get -y install ntpdate
-	apt-get -y install espeak 
+	apt-get -y install espeak
 	apt-get -y install mbrola
 	apt-get -y install git
 	apt-get -y install python
@@ -87,9 +87,9 @@ step_3_database() {
 	echo "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWD}" | debconf-set-selections
 	echo "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWD}" | debconf-set-selections
 	apt_install mysql-client mysql-common mysql-server
-	
-	mysqladmin -u root password ${MYSQL_ROOT_PASSWD}
-	
+
+	mysqladmin -u root --password=${MYSQL_ROOT_PASSWD}
+
 	systemctl status mysql > /dev/null 2>&1
 	if [ $? -ne 0 ]; then
     	service mysql status
@@ -195,7 +195,7 @@ step_7_jeedom_customization() {
 			    sed -i 's/;opcache.enable_cli=0/opcache.enable_cli=1/g' /etc/${folder}/${subfolder}/php.ini > /dev/null 2>&1
 			    sed -i 's/opcache.enable_cli=0/opcache.enable_cli=1/g' /etc/${folder}/${subfolder}/php.ini > /dev/null 2>&1
 	    	fi
-		done 
+		done
 	done
 
 	a2dismod status
@@ -256,11 +256,11 @@ step_8_jeedom_configuration() {
 	mysql_sql "CREATE DATABASE jeedom;"
 	mysql_sql "GRANT ALL PRIVILEGES ON jeedom.* TO 'jeedom'@'%';"
 	cp ${WEBSERVER_HOME}/core/config/common.config.sample.php ${WEBSERVER_HOME}/core/config/common.config.php
-	sed -i "s/#PASSWORD#/${MYSQL_JEEDOM_PASSWD}/g" ${WEBSERVER_HOME}/core/config/common.config.php 
-	sed -i "s/#DBNAME#/jeedom/g" ${WEBSERVER_HOME}/core/config/common.config.php 
-	sed -i "s/#USERNAME#/jeedom/g" ${WEBSERVER_HOME}/core/config/common.config.php 
-	sed -i "s/#PORT#/3306/g" ${WEBSERVER_HOME}/core/config/common.config.php 
-	sed -i "s/#HOST#/localhost/g" ${WEBSERVER_HOME}/core/config/common.config.php 
+	sed -i "s/#PASSWORD#/${MYSQL_JEEDOM_PASSWD}/g" ${WEBSERVER_HOME}/core/config/common.config.php
+	sed -i "s/#DBNAME#/jeedom/g" ${WEBSERVER_HOME}/core/config/common.config.php
+	sed -i "s/#USERNAME#/jeedom/g" ${WEBSERVER_HOME}/core/config/common.config.php
+	sed -i "s/#PORT#/3306/g" ${WEBSERVER_HOME}/core/config/common.config.php
+	sed -i "s/#HOST#/localhost/g" ${WEBSERVER_HOME}/core/config/common.config.php
 	chmod 775 -R ${WEBSERVER_HOME}
 	chown -R www-data:www-data ${WEBSERVER_HOME}
 	echo "${VERT}step_8_jeedom_configuration success${NORMAL}"
@@ -305,13 +305,13 @@ step_10_jeedom_post() {
 
 step_11_jeedom_check() {
 	echo "---------------------------------------------------------------------"
-	echo "${JAUNE}Start step_12_jeedom_check${NORMAL}"
+	echo "${JAUNE}Start step_11_jeedom_check${NORMAL}"
 	php ${WEBSERVER_HOME}/sick.php
 	if [ $? -ne 0 ]; then
     	echo "${ROUGE}Could not install make jeedom sudo - abort${NORMAL}"
     	exit 1
   	fi
-	echo "${VERT}step_12_jeedom_check success${NORMAL}"
+	echo "${VERT}step_11_jeedom_check success${NORMAL}"
 }
 
 distrib_1_spe(){
@@ -397,7 +397,6 @@ case ${STEP} in
 	step_9_jeedom_installation
 	step_10_jeedom_post
 	step_11_jeedom_check
-	distrib_1_spe
 	echo "/!\ IMPORTANT /!\ Root MySql password is ${MYSQL_ROOT_PASSWD}"
 	;;
    1) step_1_upgrade
@@ -422,6 +421,8 @@ case ${STEP} in
 	;;
    11) step_11_jeedom_check
 	;;
+   12) distrib_1_spe
+  ;;
    *) echo "${ROUGE}Sorry, I can not get a ${STEP} step for you!${NORMAL}"
 	;;
 esac
@@ -429,4 +430,3 @@ esac
 rm -rf ${WEBSERVER_HOME}/index.html > /dev/null 2>&1
 
 exit 0
-

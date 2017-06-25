@@ -5,6 +5,8 @@ Jeedom Version 2.4.6
 sudo rfcomm bind /dev/rfcomm0 98:D3:31:FC:20:FF
 sudo rfcomm release all (to unbind all devices)
 
+
+On ubuntu based hosts only, follow step 2) & 3)
 2) Start mysql database:
 
 sudo docker run --name jeedom-mysql \
