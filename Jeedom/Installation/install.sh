@@ -397,6 +397,7 @@ case ${STEP} in
 	step_9_jeedom_installation
 	step_10_jeedom_post
 	step_11_jeedom_check
+  distrib_1_spe
 	echo "/!\ IMPORTANT /!\ Root MySql password is ${MYSQL_ROOT_PASSWD}"
 	;;
    1) step_1_upgrade
