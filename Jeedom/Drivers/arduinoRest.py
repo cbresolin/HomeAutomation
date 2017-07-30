@@ -20,6 +20,8 @@ try:
     # Return values according to command
     if "/temperature/" in args.command:
         print dictResp.get('temperature', 'None')
+    elif "/digital/" in args.command:
+        print dictResp.get('message', 'None')
     else:
         print dictResp.get('return_value', -1)
 
