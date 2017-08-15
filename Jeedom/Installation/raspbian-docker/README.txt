@@ -61,7 +61,7 @@ https://diyprojects.io/docker-easily-test-home-automation-software-raspberry-pi/
 using
 - docker exec -ti jeedom-oz bash
 -- sudo chown www-data:www-data /var/www/html
--- sudo chown www-data:dialout /dev/rfcomm0
+-- sudo usermod -a -G dialout,tty www-data
 
 15) Install docker-compose on Raspberry Pi using
 https://github.com/hypriot/arm-compose#installation
@@ -69,4 +69,8 @@ https://github.com/hypriot/arm-compose#installation
 
 Download url : https://github.com/jeedom/core/archive/stablev3.zip
 
+# To build from docker compose yaml file
 docker-compose build --force-rm --no-cache jeedom
+
+# To build reference image for jeedom
+docker build --no-cache --rm --tag cbresoli/jeedom-test:latest .

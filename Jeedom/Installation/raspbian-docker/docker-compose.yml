@@ -7,8 +7,8 @@ services:
   # MySQL data container
   jeedom-data:
       build: ./jeedom-data
-      image: cbresoli/jeedom-data:latest
       container_name: jeedom-data
+      image: cbresoli/jeedom-data:latest
 
   # MySQL DB container#
   jeedom-mysql:
@@ -27,8 +27,8 @@ services:
       build: ./jeedom
       depends_on:
           - jeedom-mysql
-      image: cbresoli/jeedom:latest
       container_name: jeedom
+      image: cbresoli/jeedom:latest
       restart: always
       ports:
           - 80:80     # http
@@ -38,10 +38,10 @@ services:
           - jeedom-mysql:mysql
       mac_address: 02:42:1a:4a:5b:66
       devices:
-          - "/dev/ttyACM0:/dev/ttyACM0"  # Zwave controller
-          - "/dev/rfcomm0:/dev/rfcomm0"  # BT Arduino device
+          - /dev/ttyACM0:/dev/ttyACM0  # Zwave controller
+          - /dev/rfcomm0:/dev/rfcomm0  # BT Arduino device
   # Avoid writing on SDCard to often (supported from docker-compose 1.7.1)
       tmpfs:
           - /tmp:rw,size=64M
           - /var/log:rw,size=32M
-          - /usr/share/nginx/www/jeedom/log/:rw,size=32M
+          - /usr/share/nginx/www/jeedom/log:rw,size=32M
