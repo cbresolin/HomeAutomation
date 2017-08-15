@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Wait a few seconds so crontab update will be taken into account
+sleep 5
+
+# Update crontab
+echo "* * * * * su --shell=/bin/bash - www-data -c '/usr/bin/php $WEBSERVER_HOME/core/php/jeeCron.php' >> /dev/null" | crontab -

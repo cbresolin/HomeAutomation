@@ -1,0 +1,47 @@
+version: '2.0'
+
+# To be built using command:
+# docker-compose build --force-rm --no-cache jeedom
+
+services:
+  # MySQL data container
+  jeedom-data:
+      build: ./jeedom-data
+      image: cbresoli/jeedom-data:latest
+      container_name: jeedom-data
+
+  # MySQL DB container#
+  jeedom-mysql:
+      depends_on:
+          - jeedom-data
+      container_name: jeedom-mysql
+      image: hypriot/rpi-mysql
+      restart: always
+      environment:
+          - MYSQL_ROOT_PASSWORD=mysqlroot
+      volumes_from:
+          - jeedom-data
+
+  # Jeedom container
+  jeedom:
+      build: ./jeedom
+      depends_on:
+          - jeedom-mysql
+      image: cbresoli/jeedom:latest
+      container_name: jeedom
+      restart: always
+      ports:
+          - 80:80     # http
+          - 8083:8083 #Open zwave
+          - 443:443   # https
+      links:
+          - jeedom-mysql:mysql
+      mac_address: 02:42:1a:4a:5b:66
+      devices:
+          - "/dev/ttyACM0:/dev/ttyACM0"  # Zwave controller
+          - "/dev/rfcomm0:/dev/rfcomm0"  # BT Arduino device
+  # Avoid writing on SDCard to often (supported from docker-compose 1.7.1)
+      tmpfs:
+          - /tmp:rw,size=64M
+          - /var/log:rw,size=32M
+          - /usr/share/nginx/www/jeedom/log/:rw,size=32M
