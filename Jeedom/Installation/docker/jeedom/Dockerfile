@@ -1,10 +1,12 @@
 FROM armhf/debian
+# FROM arm32v7/debian:jessie-slim
 
 MAINTAINER christophe.bresolin@gmail.com
 
 # Environment variables
-ENV JEEDOM_VERSION stablev3
-ENV WEBSERVER_HOME /usr/share/nginx/www/jeedom
+# ENV JEEDOM_BRANCH stablev3
+ENV JEEDOM_BRANCH releas
+ENV WEBSERVER_HOME /var/www/html
 
 # Dependancies
 RUN apt-get update && apt-get install -y \
@@ -52,12 +54,12 @@ RUN echo "www-data ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)
 # Jeedom install
 RUN mkdir -p $WEBSERVER_HOME && \
     mkdir -p $WEBSERVER_HOME/log && \
-    wget https://github.com/jeedom/core/archive/$JEEDOM_VERSION.zip -O /tmp/jeedom.zip && \
+    wget https://github.com/jeedom/core/archive/$JEEDOM_BRANCH.zip -O /tmp/jeedom.zip && \
     unzip -q /tmp/jeedom.zip -d /root/ && \
     cp -R /root/core-*/* $WEBSERVER_HOME/ && \
     cp -R /root/core-*/.htaccess $WEBSERVER_HOME/ && \
     rm -rf /root/core-*
-RUN sed -i 's/,127.0.0.1/,127.0.0.1,172.17.*.*/' $WEBSERVER_HOME/core/config/default.config.ini
+RUN sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*/' $WEBSERVER_HOME/core/config/default.config.ini
 
 # Openzwave plugin install
 # RUN wget https://github.com/jeedom/plugin-openzwave/archive/master.zip -O /tmp/plugin-openzwave-master.zip && \
@@ -71,7 +73,7 @@ RUN chmod 775 -R $WEBSERVER_HOME && \
     chown -R www-data:www-data $WEBSERVER_HOME && \
     usermod -a -G dialout,tty www-data
 
-# Clean-up
+# Clean-up /tmp
 RUN rm -rf /tmp/*
 
 # SSL - https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-nginx-for-ubuntu-14-04

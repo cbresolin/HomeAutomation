@@ -8,7 +8,7 @@ services:
   jeedom-data:
       build: ./jeedom-data
       container_name: jeedom-data
-      image: cbresoli/jeedom-data:latest
+      image: cbresoli/rpi-jeedom-data:latest
 
   # MySQL DB container#
   jeedom-mysql:
@@ -28,7 +28,7 @@ services:
       depends_on:
           - jeedom-mysql
       container_name: jeedom
-      image: cbresoli/jeedom:latest
+      image: cbresoli/rpi-jeedom:latest
       restart: always
       ports:
           - 80:80     # http
