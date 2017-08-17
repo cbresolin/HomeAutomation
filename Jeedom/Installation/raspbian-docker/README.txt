@@ -18,6 +18,10 @@
 - rfcomm to check
 6) Install docker using
 - curl -sSL get.docker.com | sh
+or
+- apt-get update
+- apt-get install docker
+- apt-get install docker.io
 7) Allow docker to start automatically
 - sudo systemctl enable docker
 8) Reboot the system
@@ -42,13 +46,13 @@ https://diyprojects.io/docker-easily-test-home-automation-software-raspberry-pi/
                   --restart=always \
                   -d sbeuzit/rpi-jeedom-oz
 
-- sudo docker run --name jeedom \
-                --link jeedom-mysql:mysql \
+- sudo docker run --name jeedom-test \
+                --link jeedom-mysql-ref:mysql \
                 --device=/dev/ttyACM0:/dev/ttyACM0 \
                 --device=/dev/rfcomm0:/dev/rfcomm0 \
                 -p 80:80 -p 8083:8083 -p 443:443 \
                 --restart=always \
-                -d cbresoli/jeedom
+                -d cbresoli/jeedom-test
 
                   --mac-address="02:42:1a:4a:5b:66" \
 
