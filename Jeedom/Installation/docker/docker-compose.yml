@@ -2,6 +2,10 @@ version: '2.0'
 
 # To be built using command:
 # docker-compose build --force-rm --no-cache jeedom
+# or docker-compose up --build`.
+
+# To be executed using command:
+# docker-compose up -d
 
 services:
   # MySQL data container
@@ -32,8 +36,8 @@ services:
       restart: always
       ports:
           - 80:80     # http
-          - 8083:8083 #Open zwave
           - 443:443   # https
+          - 8083:8083 # Open zwave
       links:
           - jeedom-mysql:mysql
       mac_address: 02:42:1a:4a:5b:66

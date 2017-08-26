@@ -43,10 +43,9 @@ https://diyprojects.io/docker-easily-test-home-automation-software-raspberry-pi/
                   --device=/dev/ttyACM0:/dev/ttyACM0 \
                   --device=/dev/rfcomm0:/dev/rfcomm0 \
                   -p 80:80 -p 8083:8083 -p 443:443 \
-                  --entrypoint /bin/bash \
-                  -ti cbresoli/rpi-jeedom-test
-
                   --restart=always \
+                  -d cbresoli/rpi-jeedom-test
+
                   --mac-address="02:42:1a:4a:5b:66" \
 
 10) Upload Jeedom backups version 2.4.6 & restore it
@@ -67,11 +66,6 @@ using
 https://github.com/hypriot/arm-compose#installation
 
 
-Download url : https://github.com/jeedom/core/archive/stablev3.zip or
-https://github.com/jeedom/core/archive/releas.zip
+Download url : https://github.com/jeedom/core/archive/releas.zip
 
-# To build from docker compose yaml file
-- sudo docker-compose build --force-rm --no-cache jeedom
-
-# To build reference image for jeedom
-- sudo docker build --no-cache --rm --tag cbresoli/rpi-jeedom-test:latest .
+16) onspect mysql docker to get its IP address so Jeedom can connect to it.

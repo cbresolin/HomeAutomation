@@ -1,12 +1,9 @@
-FROM armhf/debian
-# FROM arm32v7/debian:jessie-slim
+FROM arm32v7/debian:jessie-slim
 
 MAINTAINER christophe.bresolin@gmail.com
 
 # Environment variables
-# ENV JEEDOM_BRANCH stablev3
 ENV JEEDOM_BRANCH releas
-ENV WEBSERVER_HOME /var/www/html
 
 # Dependancies
 RUN apt-get update && apt-get install -y \
@@ -48,37 +45,36 @@ RUN rm /etc/nginx/sites-available/default && \
 COPY nginx_default /etc/nginx/sites-available/default
 RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Sudo access rules
-RUN echo "www-data ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)
+# See https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-nginx-for-ubuntu-14-04
+RUN mkdir -p /etc/nginx/ssl && \
+    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/C=FR/ST=France/L=Nice/O=Home/OU=Home/CN=jeedom.com"
 
 # Jeedom install
-RUN mkdir -p $WEBSERVER_HOME && \
-    mkdir -p $WEBSERVER_HOME/log && \
+RUN mkdir -p /var/www/html && \
+    mkdir -p /var/www/html/log && \
     wget https://github.com/jeedom/core/archive/$JEEDOM_BRANCH.zip -O /tmp/jeedom.zip && \
     unzip -q /tmp/jeedom.zip -d /root/ && \
-    cp -R /root/core-*/* $WEBSERVER_HOME/ && \
-    cp -R /root/core-*/.htaccess $WEBSERVER_HOME/ && \
+    cp -R /root/core-*/* /var/www/html/ && \
+    cp -R /root/core-*/.htaccess /var/www/html/ && \
     rm -rf /root/core-*
-RUN sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*/' $WEBSERVER_HOME/core/config/default.config.ini
+RUN sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*\"/' /var/www/html/core/config/default.config.ini
 
 # Openzwave plugin install
-# RUN wget https://github.com/jeedom/plugin-openzwave/archive/master.zip -O /tmp/plugin-openzwave-master.zip && \
-#    unzip -q /tmp/plugin-openzwave-master.zip -d /root/ && \
-#    chmod +x /root/plugin-openzwave-master/resources/install.sh && \
-#    /root/plugin-openzwave-master/resources/install.sh && \
-#    rm -rf /root/plugin-openzwave-master
-# RUN mkdir -p $WEBSERVER_HOME/plugins/openzwave/data
+RUN mkdir -p /var/www/html/plugins/openzwave/data && \
+    wget https://github.com/jeedom/plugin-openzwave/archive/master.zip -O /tmp/plugin-openzwave-master.zip && \
+    unzip -q /tmp/plugin-openzwave-master.zip -d /root/ && \
+    chmod +x /root/plugin-openzwave-master/resources/install.sh && \
+    /root/plugin-openzwave-master/resources/install.sh && \
+    rm -rf /root/plugin-openzwave-master
 
-RUN chmod 775 -R $WEBSERVER_HOME && \
-    chown -R www-data:www-data $WEBSERVER_HOME && \
+# Sudo access rules
+RUN echo "www-data ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)
+RUN chmod 775 -R /var/www/html && \
+    chown -R www-data:www-data /var/www/html && \
     usermod -a -G dialout,tty www-data
 
 # Clean-up /tmp
 RUN rm -rf /tmp/*
-
-# SSL - https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-nginx-for-ubuntu-14-04
-RUN mkdir -p /etc/nginx/ssl && \
-    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/C=FR/ST=France/L=Nice/O=Home/OU=Home/CN=jeedom.com"
 
 # Supervisor
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
