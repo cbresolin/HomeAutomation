@@ -68,4 +68,4 @@ https://github.com/hypriot/arm-compose#installation
 
 Download url : https://github.com/jeedom/core/archive/releas.zip
 
-16) onspect mysql docker to get its IP address so Jeedom can connect to it.
+16) inspect mysql docker to get its IP address so Jeedom can connect to it.

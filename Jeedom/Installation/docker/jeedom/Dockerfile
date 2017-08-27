@@ -56,8 +56,8 @@ RUN mkdir -p /var/www/html && \
     unzip -q /tmp/jeedom.zip -d /root/ && \
     cp -R /root/core-*/* /var/www/html/ && \
     cp -R /root/core-*/.htaccess /var/www/html/ && \
-    rm -rf /root/core-*
-RUN sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*\"/' /var/www/html/core/config/default.config.ini
+    rm -rf /root/core-* && \
+    sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*\"/' /var/www/html/core/config/default.config.ini
 
 # Openzwave plugin install
 RUN mkdir -p /var/www/html/plugins/openzwave/data && \
