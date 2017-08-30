@@ -1,16 +1,11 @@
-# To be built using command:
-# docker-compose build --force-rm --no-cache jeedom
-# or docker-compose up -d
-
-# To be re-built using command:
-# docker-compose up -d --build
+# To be run using command
+# docker-compose -f docker-compose-jeedom-install.yml up -d
 
 version: '2.0'
 
 services:
   # MySQL data container
   jeedom-data:
-      build: ./jeedom-data
       container_name: jeedom-data
       image: cbresolin/rpi-jeedom-data:latest
 
@@ -28,7 +23,6 @@ services:
 
   # Jeedom container
   jeedom:
-      build: ./jeedom
       depends_on:
           - jeedom-mysql
       container_name: jeedom
