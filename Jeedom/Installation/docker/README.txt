@@ -9,21 +9,21 @@
 7) Configure locales, keyboard, wifi , password using
 - ssh pi@192.168.x.x + raspberry as password
 - sudo raspi-config
-8) Pair HC-05 device to raspberry using:
+8) Pair HC-05 or SPP-CA device to raspberry using:
 - hcitool scan to get HC-05 BD address
 - sudo bluetoothctl
 -- pairable on
 -- agent on
 -- scan on
--- pair 98:D3:31:FC:1E:28
+-- pair [BD address]
 -- enter pin 1234
 -- paired-devices to check
 -- exit
 9) Bind paired device to /dev/rfcomm0 using
-- sudo rfcomm bind 0 98:D3:31:FC:1E:28
+- sudo rfcomm bind 0 [BD address]
 - rfcomm to check
 10) Add below to /etc/rc.local file so pi 3 create rfcomm device at system boot
-- sudo rfcomm bind 0 98:D3:31:FC:1E:28
+- sudo rfcomm bind 0 [BD address]
 11) Install docker using
 - curl -sSL get.docker.com | sh
 12) If you would like to use Docker as a non-root user, you should now consider
