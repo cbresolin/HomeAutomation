@@ -1,9 +1,11 @@
 # To be built using command:
-# docker-compose build --force-rm --no-cache jeedom
-# or docker-compose up -d
+# docker-compose up --no-recreate -d
 
 # To be re-built using command:
-# docker-compose up -d --build
+# docker-compose up -d --build --no-recreate
+
+# To start it again without building images using command:
+# docker-compose up -d --no-build
 
 version: '2.0'
 
