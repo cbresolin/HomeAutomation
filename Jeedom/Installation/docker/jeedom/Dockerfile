@@ -3,7 +3,7 @@ FROM arm32v7/debian:jessie-slim
 MAINTAINER christophe.bresolin@gmail.com
 
 # Environment variables
-ENV JEEDOM_BRANCH stablev3
+ENV JEEDOM_BRANCH releas
 
 # Dependancies
 RUN apt-get update && apt-get install -y \
@@ -58,14 +58,6 @@ RUN mkdir -p /var/www/html && \
     cp -R /root/core-*/.htaccess /var/www/html/ && \
     rm -rf /root/core-* && \
     sed -i 's/127.0.0.1;192.168.*.*/127.0.0.1;192.168.*.*;172.17.*.*\"/' /var/www/html/core/config/default.config.ini
-
-# Openzwave plugin install
-RUN mkdir -p /var/www/html/plugins/openzwave/data && \
-    wget https://github.com/jeedom/plugin-openzwave/archive/master.zip -O /tmp/plugin-openzwave-master.zip && \
-    unzip -q /tmp/plugin-openzwave-master.zip -d /root/ && \
-    chmod +x /root/plugin-openzwave-master/resources/install.sh && \
-    /root/plugin-openzwave-master/resources/install.sh && \
-    rm -rf /root/plugin-openzwave-master
 
 # Sudo access rules
 RUN echo "www-data ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)

@@ -36,15 +36,16 @@ Remember that you will have to log out and back in for this to take effect!
 https://github.com/hypriot/arm-compose#installation
 14) Reboot the system
 - sudo reboot
-15) Login to docker hub (cbresolin) while repos are private (no need when public) using
-- docker login
-15) Download & copy docker-compose-jeedom-install.yml file to pi 3 (/home/pi)
-https://github.com/cbresolin/HomeAutomation/blob/master/Jeedom/Installation/docker
-16) Pull Jeedom docker images and start Jeedom services using
-- docker-compose -f docker-compose-jeedom-install.yml up -d
-
-
-
-
-
-16) inspect mysql docker to get its IP address so Jeedom can connect to it.
+15) Download & copy content of https://github.com/cbresolin/HomeAutomation/blob/master/Jeedom/Installation/docker to pi 3 in /home/pi path
+16) Start Jeedom services using
+- docker-compose up -d
+This builds Jeedom service images according to docker-compose.yml file and starts all containers in detached mode)
+17) If Jeedom images require to be rebuilt, use command
+- docker-compose up -d --build --no-recreate
+This rebuilds images without recreating containers if they already exist
+18) Once containers are up, fill in localhost IP address and mysql database root password
+- localhost IP address = jeedom-mysql IP address (docker inspect jeedom-mysql gives this address)
+- mysql root password available in docker-compose.yml file
+19) Jeedom finishes its installation
+20) Once login with admin/admin, restore any relevant backup you have
+21) OpenZwave dependancies will be installed automatically if zwave plugin is activated
