@@ -21,15 +21,13 @@ services:
       depends_on:
           - jeedom-data
       container_name: jeedom-mysql
-      image: hypriot/rpi-mysql
+      image: hypriot/rpi-mysql:latest
       restart: always
       environment:
           - MYSQL_ROOT_PASSWORD=mysqlroot
       volumes_from:
           - jeedom-data
-      networks:
-          pi_default:
-            ipv4_address: 172.18.0.2
+  # ipv4_address: 172.18.0.2
 
   # Jeedom container
   jeedom:
