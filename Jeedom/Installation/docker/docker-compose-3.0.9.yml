@@ -1,11 +1,8 @@
-# To be built using command:
-# docker-compose up --no-recreate -d
+# To create & start services:
+# docker-compose -f docker-compose-3.0.9.yml up -d
 
-# To be re-built using command:
-# docker-compose up -d --build --no-recreate
-
-# To start it again without building images using command:
-# docker-compose up -d --no-build
+# To stop services:
+# docker-compose -f docker-compose-3.0.9.yml down
 
 version: '2.0'
 
@@ -14,19 +11,20 @@ services:
   jeedom-data:
       build: ./jeedom-data
       container_name: jeedom-data
-      image: cbresolin/rpi-jeedom-data:latest
+      image: cbresolin/rpi-jeedom-data:3.0.9
 
   # MySQL DB container#
   jeedom-mysql:
       depends_on:
           - jeedom-data
       container_name: jeedom-mysql
-      image: hypriot/rpi-mysql
+      image: hypriot/rpi-mysql:latest
       restart: always
       environment:
           - MYSQL_ROOT_PASSWORD=mysqlroot
       volumes_from:
           - jeedom-data
+  # ipv4_address: 172.18.0.2
 
   # Jeedom container
   jeedom:
@@ -34,7 +32,7 @@ services:
       depends_on:
           - jeedom-mysql
       container_name: jeedom
-      image: cbresolin/rpi-jeedom:latest
+      image: cbresolin/rpi-jeedom:3.0.9
       restart: always
       ports:
           - 80:80     # http

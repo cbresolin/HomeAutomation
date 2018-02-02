@@ -3,7 +3,7 @@ FROM arm32v7/debian:jessie-slim
 MAINTAINER christophe.bresolin@gmail.com
 
 # Environment variables
-ENV JEEDOM_BRANCH releas
+ENV JEEDOM_VERSION 3.1
 
 # Dependancies
 RUN apt-get update && apt-get install -y \
@@ -53,7 +53,7 @@ RUN mkdir -p /etc/nginx/ssl && \
 # Jeedom install
 RUN mkdir -p /var/www/html && \
     mkdir -p /var/www/html/log && \
-    wget https://github.com/jeedom/core/archive/$JEEDOM_BRANCH.zip -O /tmp/jeedom.zip && \
+    wget https://github.com/jeedom/core/archive/$JEEDOM_VERSION.zip -O /tmp/jeedom.zip && \
     unzip -q /tmp/jeedom.zip -d /root/ && \
     cp -R /root/core-*/* /var/www/html/ && \
     cp -R /root/core-*/.htaccess /var/www/html/ && \
