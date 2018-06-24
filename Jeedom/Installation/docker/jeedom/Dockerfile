@@ -3,7 +3,7 @@ FROM arm32v7/debian:jessie-slim
 MAINTAINER christophe.bresolin@gmail.com
 
 # Environment variables
-ENV JEEDOM_VERSION 3.1
+ENV JEEDOM_VERSION stable
 
 # Dependancies
 RUN apt-get update && apt-get install -y \
