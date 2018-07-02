@@ -7,6 +7,6 @@ mkdir -p /var/log/supervisor
 mkdir -p /var/log/nginx
 
 # www-data needs write access to this folder
-chmod a+w /var/www/html/log
+chmod a+w $WEBSERVER_HOME/log
 
 /usr/bin/supervisord
