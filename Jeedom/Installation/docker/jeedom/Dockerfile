@@ -43,8 +43,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # NGINX Default Configuration
-RUN rm /etc/nginx/sites-available/default
+RUN rm /etc/nginx/sites-available/default && \
+    rm /etc/nginx/sites-enabled/default
 COPY nginx_default /etc/nginx/sites-available/default
+RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # See https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-nginx-for-ubuntu-14-04
 RUN mkdir -p /etc/nginx/ssl && \
@@ -54,7 +56,11 @@ RUN mkdir -p /etc/nginx/ssl && \
 # PHP Configuration
 RUN sed -i 's/max_execution_time = 30/max_execution_time = 800/g' /etc/php/7.0/fpm/php.ini && \
     sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 1G/g' /etc/php/7.0/fpm/php.ini && \
-    sed -i 's/post_max_size = 8M/post_max_size = 1G/g' /etc/php/7.0/fpm/php.ini
+    sed -i 's/post_max_size = 8M/post_max_size = 1G/g' /etc/php/7.0/fpm/php.ini && \
+    sed -i 's/expose_php = On/expose_php = Off/g' /etc/php/7.0/fpm/php.ini && \
+    sed -i 's/display_errors = Off/display_errors = On/g' /etc/php/7.0/fpm/php.ini && \
+    sed -i 's/display_startup_errors = Off/display_startup_errors = On/g' /etc/php/7.0/fpm/php.ini && \
+    sed -i 's/pm.max_children = 5/pm.max_children = 20/g' /etc/php/7.0/fpm/pool.d/www.conf
 
 # Install Jeedom
 RUN mkdir -p $WEBSERVER_HOME/log && \
@@ -71,15 +77,19 @@ RUN chmod 775 -R $WEBSERVER_HOME && \
     chown -R www-data:www-data $WEBSERVER_HOME && \
     usermod -a -G dialout,tty www-data
 
-# Clean-up /tmp
-RUN rm -rf /tmp/*
-
-# Supervisor
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Clean-up /tmp & temp folder for Jeedom
+RUN rm -rf /tmp/* && \
+    mkdir -p /tmp/jeeedom && \
+    chmod 775 -R /tmp/jeedom/ && \
+    chown -R www-data:www-data /tmp/jeedom/
 
 # Add crontab when container is launched (to avoid the HARDLINKS issue)
 COPY ./add_crontab /etc/supervisor/
 RUN chmod +x /etc/supervisor/add_crontab
+
+# Supervisor
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Create log dir in case it is launched using tmpfs
 COPY ./start_supervisord /
