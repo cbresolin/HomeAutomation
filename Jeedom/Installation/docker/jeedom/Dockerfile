@@ -79,9 +79,9 @@ RUN chmod 775 -R $WEBSERVER_HOME && \
 
 # Clean-up /tmp & temp folder for Jeedom
 RUN rm -rf /tmp/* && \
-    mkdir -p /tmp/jeeedom && \
-    chmod 775 -R /tmp/jeedom/ && \
-    chown -R www-data:www-data /tmp/jeedom/
+    mkdir -p /tmp/jeedom && \
+    chmod 775 -R /tmp/jeedom && \
+    chown -R www-data:www-data /tmp/jeedom
 
 # Add crontab when container is launched (to avoid the HARDLINKS issue)
 COPY ./add_crontab /etc/supervisor/
