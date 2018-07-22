@@ -24,7 +24,7 @@ services:
       image: hypriot/rpi-mysql:latest
       restart: always
       environment:
-          - MYSQL_ROOT_PASSWORD=mysqlroot
+          - MYSQL_ROOT_PASSWORD=jeedom
       volumes_from:
           - jeedom-data
       networks:
