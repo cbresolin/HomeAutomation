@@ -24,22 +24,12 @@
 - rfcomm to check
 10) Add below to /etc/rc.local file so pi 3 create rfcomm device at system boot
 - sudo rfcomm bind 0 [BD address]
-11) Install docker using
-- curl -sSL get.docker.com | sh
-12) If you would like to use Docker as a non-root user, you should now consider
-adding your user to the "docker" group with something like:
-- sudo usermod -aG docker pi
-Remember that you will have to log out and back in for this to take effect!
-13) Allow docker to start automatically
-- sudo systemctl enable docker
-14) Install docker-compose on Raspberry Pi using
-https://github.com/hypriot/arm-compose#installation
-14) Reboot the system
+11) Reboot the system
 - sudo reboot
-15) Download & copy content of https://github.com/cbresolin/HomeAutomation/blob/master/Jeedom/Installation/script to pi 3 in /home/pi path
-16) Make script executable using
+12) Download & copy content of https://github.com/cbresolin/HomeAutomation/blob/master/Jeedom/Installation/script to pi 3 in /home/pi path
+13) Make script executable using
 - chmod +x install.sh
-17) Launch installation script using
-- sudo ./install.sh -m Jeedom -v stable
-18) Once login with admin/admin, restore any relevant backup you have
-19) OpenZwave dependancies will be installed automatically if zwave plugin is activated
+14) Launch installation script using
+- sudo bash ./install.sh -m Jeedom -v stable
+15) Once login with admin/admin, restore any relevant backup you have
+16) OpenZwave dependancies will be installed automatically if zwave plugin is activated
