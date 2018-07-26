@@ -11,6 +11,7 @@
 - sudo raspi-config
 8) Pair HC-05 or SPP-CA device to raspberry using:
 - hcitool scan to get HC-05 BD address
+- systemctl start hciuart if no default controller is present, this should solve this issue
 - sudo bluetoothctl
 -- pairable on
 -- agent on
