@@ -11,7 +11,6 @@
 - sudo raspi-config
 8) Pair HC-05 or SPP-CA device to raspberry using:
 - hcitool scan to get HC-05 BD address
-- systemctl start hciuart if no default controller is present, this should solve this issue
 - sudo bluetoothctl
 -- pairable on
 -- agent on
@@ -42,3 +41,9 @@
 - sudo chmod 400 /etc/apache2/ssl/apache2.key
 20) Make apache2 points to your certs
 - sudo nano /etc/apache2/sites-available/default-ssl.conf
+21) To restart hciuart service if no default BT controller is present
+- sudo systemctl start hciuart -l
+22) To re-install BT on pi:
+- sudo apt-get purge pi-bluetooth raspberrypi-sys-mods
+- sudo apt-get install pi-bluetooth raspberrypi-sys-mods
+- sudo reboot
