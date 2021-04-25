@@ -37,8 +37,8 @@
 18) Create a folder in /etc/apache2/ssl
 19) Create your private/public keys and store them in /etc/apache2/ssl
 - sudo mkdir -p /etc/apache2/ssl
-- sudo openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout /etc/apache2/ssl/apache2.key -out /etc/apache2/ssl/apache2.crt -subj "/C=FR/ST=France/L=Toulouse/O=./OU=./CN=jeedom.cbresolin.ovh/emailAddress=christophe.bresolin@gmail.com"
-- sudo chmod 400 /etc/apache2/ssl/apache2.key
+- sudo openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout /etc/apache2/ssl/jeedom.cbresolin.ovh.key -out /etc/apache2/ssl/jeedom.cbresolin.ovh.crt -subj "/C=FR/ST=France/L=Toulouse/O=./OU=./CN=jeedom.cbresolin.ovh/emailAddress=christophe.bresolin@gmail.com"
+- sudo chmod 400 /etc/apache2/ssl/jeedom.cbresolin.ovh.key
 20) Make apache2 points to your certs
 - sudo nano /etc/apache2/sites-available/default-ssl.conf
 21) To restart hciuart service if no default BT controller is present
