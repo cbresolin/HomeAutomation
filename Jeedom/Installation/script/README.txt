@@ -47,3 +47,7 @@
 - sudo apt-get purge pi-bluetooth raspberrypi-sys-mods
 - sudo apt-get install pi-bluetooth raspberrypi-sys-mods
 - sudo reboot
+
+
+
+/!\ IMPORTANT /!\ Le mot de passe root MySQL est 82d650fd45eeefa
