@@ -30,7 +30,7 @@
 13) Make script executable using
 - chmod +x install.sh
 14) Launch installation script using
-- sudo bash ./install.sh -m Jeedom -v stable
+- sudo bash ./install.sh -m Jeedom
 15) Once login with admin/admin, restore any relevant backup you have
 16) OpenZwave dependancies will be installed automatically if zwave plugin is activated
 17) To activate listening on port 443 (SSL), follow https://www.wistee.fr/installer-ssl/apache2-mod-ssl.html
