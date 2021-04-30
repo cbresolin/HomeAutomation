@@ -33,14 +33,42 @@
 - sudo bash ./install.sh -m Jeedom
 15) Once login with admin/admin, restore any relevant backup you have
 16) OpenZwave dependancies will be installed automatically if zwave plugin is activated
-17) To activate listening on port 443 (SSL), follow https://www.wistee.fr/installer-ssl/apache2-mod-ssl.html
-18) Create a folder in /etc/apache2/ssl
-19) Create your private/public keys and store them in /etc/apache2/ssl
-- sudo mkdir -p /etc/apache2/ssl
-- sudo openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout /etc/apache2/ssl/jeedom.cbresolin.ovh.key -out /etc/apache2/ssl/jeedom.cbresolin.ovh.crt -subj "/C=FR/ST=France/L=Toulouse/O=./OU=./CN=jeedom.cbresolin.ovh/emailAddress=christophe.bresolin@gmail.com"
-- sudo chmod 400 /etc/apache2/ssl/jeedom.cbresolin.ovh.key
-20) Make apache2 points to your certs
-- sudo nano /etc/apache2/sites-available/default-ssl.conf
+17) To activate listening on port 443 (SSL), follow https://certbot.eff.org/lets-encrypt/debianbuster-apache and select apache for debian 10 (Burst)
+- Make sure to temporarily enable Box redirection on port 80 to 80 as requested, otherwise generation of certificates won't be working
+
+- Ouptut when it works:
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator apache, Installer apache
+No names were found in your configuration files. Please enter in your domain
+name(s) (comma and/or space separated)  (Enter 'c' to cancel): jeedom.cbresolin.ovh
+Requesting a certificate for jeedom.cbresolin.ovh
+Performing the following challenges:
+http-01 challenge for jeedom.cbresolin.ovh
+Enabled Apache rewrite module
+Waiting for verification...
+Cleaning up challenges
+Created an SSL vhost at /etc/apache2/sites-available/000-default-le-ssl.conf
+Enabled Apache socache_shmcb module
+Enabled Apache ssl module
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+Enabling available site: /etc/apache2/sites-available/000-default-le-ssl.conf
+Enabled Apache rewrite module
+Redirecting vhost in /etc/apache2/sites-enabled/000-default.conf to ssl vhost in /etc/apache2/sites-available/000-default-le-ssl.conf
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations! You have successfully enabled https://jeedom.cbresolin.ovh
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/jeedom.cbresolin.ovh/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/jeedom.cbresolin.ovh/privkey.pem
+   Your certificate will expire on 2021-07-28. To obtain a new or
+   tweaked version of this certificate in the future, simply run
+   certbot again with the "certonly" option. To non-interactively
+   renew *all* of your certificates, run "certbot renew"
+
 21) To restart hciuart service if no default BT controller is present
 - sudo systemctl start hciuart -l
 22) To re-install BT on pi:
