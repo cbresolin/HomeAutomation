@@ -23,20 +23,20 @@ try:
 
     # Return values according to content
     if "message" in dictResp:
-        print dictResp.get('message', 'None')
+        print (dictResp.get('message', 'None'))
     elif "return_value" in dictResp:
-        print dictResp.get('return_value', -1)
+        print (dictResp.get('return_value', -1))
     else:
-        print dictResp
+        print (dictResp)
 
 except IOError as e:
-    print "I/O error ({0}):{1}".format(e.errno, e.strerror)
+    print ("I/O error ({0}):{1}".format(e.errno, e.strerror))
 except KeyError as e:
-    print "Key Error on {0}".format(e)
+    print ("Key Error on {0}".format(e))
 except ValueError as e:
-    print "Value error ({0})".format(e)
+    print ("Value error ({0})".format(e))
 except:
-    print "Unexpected error:", sys.exc_info()[0]
+    print ("Unexpected error:", sys.exc_info()[0])
     raise
 
 exit()
